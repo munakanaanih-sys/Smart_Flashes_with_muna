@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ومضات ذكية مع منى مصطفى</title>
     
+    <!-- استيراد الخطوط الاحترافية من جوجل لتناسب اللغات الثلاث -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Rubik:wght@400;500;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Rubik:wght@400;500;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* تعريف متغيرات الألوان المبهجة (ألوان قوس قزح) وثيم الموقع */
+        /* تعريف متغيرات الألوان المبهجة (ألوان قوس قزح) */
         :root {
             --rainbow-red: #ff4757;
             --rainbow-orange: #ffa502;
@@ -38,7 +39,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 20px;
             overflow-x: hidden;
             position: relative;
         }
@@ -60,23 +60,59 @@
             pointer-events: none;
         }
 
+        /* ----- الشريط العلوي (يحتوي زر لمحة عني واللغات) ----- */
+        .top-nav {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 0 20px;
+            margin-bottom: 20px;
+            z-index: 100;
+        }
+
+        /* تصميم زر لمحة عني كرابط تفاعلي مع خلفية بيضاء وحواف ملونة */
+        .about-btn {
+            background: white;
+            color: var(--rainbow-blue);
+            border: 2px solid var(--rainbow-blue);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none; /* إلغاء الخط السفلي للرابط */
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(30, 144, 255, 0.1);
+            position: relative; /* مهم لضبط موقع التلميح الأسفل منه */
+        }
+
+        .about-btn:hover {
+            background: var(--rainbow-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 144, 255, 0.25);
+        }
+
         /* شريط اختيار وتبديل اللغة */
         .lang-switcher {
             display: flex;
             gap: 8px;
-            margin-bottom: 35px;
             background: white;
             padding: 6px;
             border-radius: 30px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border: 1px solid rgba(0,0,0,0.05);
-            z-index: 100;
         }
 
         .lang-btn {
             border: none;
             background: none;
-            padding: 10px 22px;
+            padding: 8px 18px;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
@@ -91,20 +127,20 @@
             box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
         }
 
-        /* ترويسة الصفحة والهيدر */
+        /* ----- ترويسة الصفحة والهيدر ----- */
         header {
             text-align: center;
             margin-bottom: 50px;
             max-width: 800px;
+            padding: 0 20px;
         }
 
-        /* حاوية الشعار الدائرية المضيئة بألوان الطيف */
         .logo-container {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 25px auto;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
             border-radius: 50%;
-            padding: 6px;
+            padding: 5px;
             background: linear-gradient(45deg, 
                 var(--rainbow-red), 
                 var(--rainbow-orange), 
@@ -126,146 +162,168 @@
         }
 
         h1 {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             background: linear-gradient(45deg, #ff4757, #1e90ff, #2ed573);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: #57606f;
             font-weight: 500;
             line-height: 1.6;
         }
 
-        /* شبكة عرض كروت المنصات */
+        /* ----- شبكة عرض كروت المنصات ----- */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 25px;
             width: 100%;
             max-width: 1200px;
-            padding: 10px;
+            padding: 10px 20px;
         }
 
-        /* تصميم كرت المنصة التفاعلي */
         .platform-card {
             background: var(--card-bg);
             border-radius: 24px;
-            padding: 35px 25px;
+            padding: 30px 20px;
             text-align: center;
             text-decoration: none;
             color: var(--text-dark);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-            border: 2.5px solid transparent;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            border: 2px solid transparent;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            height: 180px;
+            height: 170px;
         }
 
-        /* توزيع ألوان قوس قزح ديناميكياً عند تمرير الفأرة على الكروت */
-        .platform-card:nth-child(4n+1):hover { border-color: var(--rainbow-red); box-shadow: 0 15px 30px rgba(255, 71, 87, 0.15); transform: translateY(-6px); }
-        .platform-card:nth-child(4n+2):hover { border-color: var(--rainbow-orange); box-shadow: 0 15px 30px rgba(255, 165, 2, 0.15); transform: translateY(-6px); }
-        .platform-card:nth-child(4n+3):hover { border-color: var(--rainbow-green); box-shadow: 0 15px 30px rgba(46, 213, 115, 0.15); transform: translateY(-6px); }
-        .platform-card:nth-child(4n+4):hover { border-color: var(--rainbow-blue); box-shadow: 0 15px 30px rgba(30, 144, 255, 0.15); transform: translateY(-6px); }
+        .platform-card:nth-child(4n+1):hover { border-color: var(--rainbow-red); box-shadow: 0 12px 25px rgba(255, 71, 87, 0.12); transform: translateY(-5px); }
+        .platform-card:nth-child(4n+2):hover { border-color: var(--rainbow-orange); box-shadow: 0 12px 25px rgba(255, 165, 2, 0.12); transform: translateY(-5px); }
+        .platform-card:nth-child(4n+3):hover { border-color: var(--rainbow-green); box-shadow: 0 12px 25px rgba(46, 213, 115, 0.12); transform: translateY(-5px); }
+        .platform-card:nth-child(4n+4):hover { border-color: var(--rainbow-blue); box-shadow: 0 12px 25px rgba(30, 144, 255, 0.12); transform: translateY(-5px); }
 
         .platform-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 8px;
             line-height: 1.4;
         }
 
-        /* شارة أدوات الذكاء الاصطناعي التجميلية */
         .ai-badge {
             background: rgba(30, 144, 255, 0.08);
             color: var(--rainbow-blue);
-            padding: 5px 14px;
+            padding: 5px 12px;
             border-radius: 30px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             margin-top: 10px;
             display: inline-block;
         }
 
-        /* تصميم الـ Tooltip المطور (فقاعة الشرح عند تمرير الماوس) */
-        .platform-card .tooltip-text {
+        /* تصميم البالون التوضيحي (Tooltip) المشترك لكروت المنصات وزر لمحة عني */
+        .tooltip-text {
             visibility: hidden;
-            width: 280px;
+            width: 260px;
             background-color: #2f3542;
             color: #ffffff;
             text-align: center;
-            border-radius: 14px;
-            padding: 14px;
+            border-radius: 12px;
+            padding: 12px;
             position: absolute;
             z-index: 10;
-            bottom: 115%;
-            left: 50%;
-            transform: translateX(-50%);
             opacity: 0;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            font-size: 0.9rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            font-size: 0.85rem;
             line-height: 1.5;
             pointer-events: none;
+            font-weight: 400;
         }
 
-        /* سهم فقاعة الشرح */
+        /* تحديد موقع بالون الشرح الخاص بالكروت (يظهر للأعلى) */
+        .platform-card .tooltip-text {
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
         .platform-card .tooltip-text::after {
             content: "";
             position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -6px;
-            border-width: 6px;
-            border-style: solid;
+            top: 100%; left: 50%; margin-left: -6px;
+            border-width: 6px; border-style: solid;
             border-color: #2f3542 transparent transparent transparent;
         }
-
-        /* حركة ظهور الشرح بسلاسة فائقة */
         .platform-card:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
-            bottom: 125%;
+            bottom: 120%;
         }
 
-        /* تذييل الصفحة */
+        /* تحديد موقع بالون الشرح لزر لمحة عني (يظهر للأسفل لعدم الخروج عن الشاشة) */
+        .about-btn .tooltip-text {
+            top: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .about-btn .tooltip-text::after {
+            content: "";
+            position: absolute;
+            bottom: 100%; left: 50%; margin-left: -6px;
+            border-width: 6px; border-style: solid;
+            border-color: transparent transparent #2f3542 transparent;
+        }
+        .about-btn:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            top: 135%;
+        }
+
+        /* ----- تذييل الصفحة ----- */
         footer {
             margin-top: auto;
-            padding: 50px 20px 20px 20px;
+            padding: 40px 20px 20px 20px;
             color: #a4b0be;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-align: center;
-            font-weight: 500;
         }
 
-        /* مواءمة الخطوط حسب اتجاهات اللغات لضمان جمالية التصميم */
-        html[dir="ltr"] .platform-card .tooltip-text { font-family: 'Poppins', sans-serif; }
-        html[dir="rtl"] .platform-card .tooltip-text { font-family: 'Cairo', sans-serif; }
+        /* مواءمة الخطوط حسب الاتجاه */
+        html[dir="ltr"] .tooltip-text { font-family: 'Poppins', sans-serif; }
+        html[dir="rtl"] .tooltip-text { font-family: 'Cairo', sans-serif; }
 
-        /* استجابة التصميم لشاشات الهواتف الذكية */
+        /* الشاشات الصغيرة لجعل الواجهة متناسقة على الهواتف */
         @media (max-width: 600px) {
-            h1 { font-size: 1.9rem; }
-            .grid-container { grid-template-columns: 1fr; gap: 20px; }
-            .logo-container { width: 120px; height: 120px; }
-            .platform-card { height: 160px; padding: 25px 15px; }
+            .top-nav { flex-direction: column-reverse; gap: 15px; padding-top: 15px; }
+            h1 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="lang-switcher">
-        <button class="lang-btn active" onclick="switchLanguage('ar')">العربية</button>
-        <button class="lang-btn" onclick="switchLanguage('he')">עברית</button>
-        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+    <!-- الشريط العلوي: زر لمحة عني المستقل + أزرار اللغة -->
+    <div class="top-nav">
+        <!-- زر لمحة عني كرابط يفتح في صفحة جديدة وبداخله البالون التوضيحي المترجم -->
+        <a href="https://munakanaanih-sys.github.io/My_CV/" target="_blank" class="about-btn" id="about-link">
+            <span id="about-btn-text">ℹ️ لمحة عني</span>
+            <span class="tooltip-text" id="about-tooltip-text">كل ما تحتاجون معرفته عني في صفحة واحدة</span>
+        </a>
+
+        <!-- أزرار اللغات الثلاث -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="switchLanguage('ar')">العربية</button>
+            <button class="lang-btn" onclick="switchLanguage('he')">עברית</button>
+            <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+        </div>
     </div>
 
+    <!-- رأس الصفحة -->
     <header>
         <div class="logo-container">
             <img src="https://i.postimg.cc/SNgVgv8L/my-new-icon.png" alt="شعار ومضات ذكية" class="logo-img">
@@ -274,154 +332,118 @@
         <p class="subtitle" id="main-subtitle">منصة الأدوات التفاعلية وتطبيقات الذكاء الاصطناعي للمعلمين</p>
     </header>
 
-    <main class="grid-container" id="platforms-grid">
-        </main>
+    <!-- شبكة عرض المنصات الـ 4 الأساسية -->
+    <main class="grid-container" id="platforms-grid"></main>
 
+    <!-- تذييل الصفحة بالحقوق -->
     <footer>
         <p>&copy; 2026 جميع الحقوق محفوظة - المعلمة ومركزة التقييم منى مصطفى - كناعنة</p>
     </footer>
 
     <script>
-        // مصفوفة النصوص الثابتة للواجهة الرئيسية حسب اللغات الثلاثة
+        // 1. النصوص الثابتة وبيانات التلميحات المستخرجة بالكامل من صورة ملف الإكسل image_d34761.png
         const interfaceTexts = {
             ar: {
                 title: "ومضات ذكية مع منى مصطفى",
                 subtitle: "منصة الأدوات التفاعلية وتطبيقات الذكاء الاصطناعي للمعلمين",
-                aiBadge: "ذكاء اصطناعي ✨"
+                aiBadge: "ذكاء اصطناعي ✨",
+                aboutBtn: "ℹ️ لمحة عني",
+                aboutTooltip: "كل ما تحتاجون معرفته عني في صفحة واحدة"
             },
             he: {
                 title: "הבזקים חכמים עם מונא מוסטפא",
                 subtitle: "פלטפורמת כלים אינטראקטיביים ויישומי בינה מלאכותית למורים",
-                aiBadge: "בינה מלאכותית ✨"
+                aiBadge: "בינה מלאכותית ✨",
+                aboutBtn: "ℹ️ מי אני?",
+                aboutTooltip: "כל מה שאתם צריכים לדעת עליי בעמוד אחד"
             },
             en: {
                 title: "Smart Flashes with Muna Mustafa",
                 subtitle: "Interactive Tools & AI Applications Platform for Teachers",
-                aiBadge: "AI Tool ✨"
+                aiBadge: "AI Tool ✨",
+                aboutBtn: "ℹ️ About Me",
+                aboutTooltip: "Everything you need to know about me on one page"
             }
         };
 
-        /* قاعدة بيانات المنصات الأربعة المستخرجة بالكامل من ملف الإكسل الخاص بكِ.
-          تمت ترجمة الشروح للإنجليزية بأسلوب تعليمي احترافي لتكتمل تجربة الموقع لجميع زواركِ.
-        */
+        // 2. قاعدة بيانات باقي المنصات المذكورة في جدولكِ
         const platformsData = [
             {
-                title: {
-                    ar: "مساعد التقييم الذكي",
-                    he: "עוזר הערכה חכם",
-                    en: "Smart Assessment Assistant"
-                },
-                desc: {
-                    ar: "أداة ذكية لبناء اختبارات مخصصة وأدوات تقييم متطورة.",
-                    he: "כלי חכם לבניית מבחנים וכלי הערכה מתקדמים.",
-                    en: "A smart AI assistant designed for building customized tests and advanced assessment tools."
-                },
-                url: "#" // يمكنكِ استبدال المربع برابط الأداة الفعلي عندما يجهز
+                title: { ar: "مساعد التقييم الذكي", he: "עוזר הערכה חכם", en: "Smart Assessment Assistant" },
+                desc: { ar: "أداة ذكية لبناء اختبارات مخصصة وأدوات تقييم متطورة.", he: "כלי חכם לבניית מבחנים וכלי הערכה מתקדמים.", en: "A smart tool for designing customized tests and assessments." },
+                url: "#" 
             },
             {
-                title: {
-                    ar: "منصة انشاء الانفوجرافيك",
-                    he: "פלטפורמה לבניית אינפוגרפיקה",
-                    en: "Infographic Creation Platform"
-                },
-                desc: {
-                    ar: "اداة لتوليد برومبت لبناء انفوجرافيك تعليمي مميز.",
-                    he: "כלי ליצירת פרומפט לבניית אינפוגרפיקה לימודית.",
-                    en: "An AI tool for generating tailored prompts to build stunning educational infographics."
-                },
+                title: { ar: "منصة انشاء الانفوجرافيك", he: "פלטפורמה לבניית אינפוגרפיקה", en: "Infographic Creation Platform" },
+                desc: { ar: "اداة لتوليد برومبت لبناء انفوجرافيك تعليمي مميز.", he: "כלי ליצירת פרומプト לבניית אינפוגרפיקה לימודית.", en: "A tool for generating a prompt to create an educational infographic." },
                 url: "https://munakanaanih-sys.github.io/infographic_with_muna/"
             },
             {
-                title: {
-                    ar: "منصة انشاء ادوات التقييم",
-                    he: "פלטפורמה לבניית כלי הערכה",
-                    en: "Assessment Tools Platform"
-                },
-                desc: {
-                    ar: "اداة لتوليد برومبت لبناء اداة تقييم ومصفوفات قياس المهارات.",
-                    he: "כלי ליצירת פרומפט לבניית כלי הערכה ומחוונים.",
-                    en: "An AI-powered platform to generate prompts for creating evaluation rubrics and assessment matrices."
-                },
+                title: { ar: "منصة انشاء ادوات التقييم", he: "פלטפורמה לבניית כלי הערכה", en: "Assessment Tools Platform" },
+                desc: { ar: "اداة لتوليد برومبت لبناء اداة تقييم ومصفوفات قياس المهارات.", he: "כלי ליצירת פרומプト לבניית כלי הערכה ומחוונים.", en: "A tool for generating a prompt to create an assessment tool." },
                 url: "https://munakanaanih-sys.github.io/Muna-assess-mate/"
             },
             {
-                title: {
-                    ar: "منصة المرافق المسح الصفي",
-                    he: "פלטפורמה לבניית וניתוח מיפוי כיתתי",
-                    en: "Classroom Mapping & Analysis Platform"
-                },
-                desc: {
-                    ar: "اداة لتحليل الامتحان بناء ملف اكسل للمسح الصفي وتحليل النتائج بدقة.",
-                    he: "כלי לניתוח מבחן המבוסס על קובץ אקסל למיפוי כיתתי ולניתוח התוצאות.",
-                    en: "An advanced system for test analysis based on classroom mapping spreadsheets to evaluate results."
-                },
+                title: { ar: "منصة المرافق المسح الصفي", he: "פלטפורמה לבניית וניתוח מיפוי כיתתי", en: "Classroom Mapping Platform" },
+                desc: { ar: "اداة لتحليل الامتحان بناء ملف اكسل للمسح الصفي وتحليل النتائج بدقة.", he: "כלי לניתוח מבחן המבוסס על קובץ אקסל למיפוי כיתתי וניתוח התוצאות.", en: "A tool for exam analysis based on an Excel file for classroom mapping." },
                 url: "https://munakanaanih-sys.github.io/mapping_with_muna/"
             }
         ];
 
-        // دالة تغيير اللغة وضبط الاتجاهات ونوع الخطوط
+        // دالة تبديل اللغة وإعادة هيكلة وتحديث النصوص بشكل حيوي وفوري للزر وباقي العناصر
         function switchLanguage(lang) {
             const htmlElement = document.documentElement;
             htmlElement.lang = lang;
-            
-            // ضبط اتجاه الصفحة (يسار ليمين فقط للغة الإنجليزية)
-            if (lang === 'en') {
-                htmlElement.dir = 'ltr';
-            } else {
-                htmlElement.dir = 'rtl';
-            }
+            htmlElement.dir = (lang === 'en') ? 'ltr' : 'rtl';
 
-            // تحديث تصميم الأزرار وجعل الزر الحالي نشطاً
+            // تعديل حالة أزرار اللغات في التوب بار
             const buttons = document.querySelectorAll('.lang-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
-            
             const activeIndex = lang === 'ar' ? 0 : lang === 'he' ? 1 : 2;
             buttons[activeIndex].classList.add('active');
 
-            // تحديث النصوص والترويسة الرئيسية للموقع
+            // تحديث نصوص الموقع الرئيسي
             document.getElementById('main-title').innerText = interfaceTexts[lang].title;
             document.getElementById('main-subtitle').innerText = interfaceTexts[lang].subtitle;
+            
+            // تحديث نص زر "لمحة عني" وتلميحه المخصص حسب جدول الإكسل
+            document.getElementById('about-btn-text').innerText = interfaceTexts[lang].aboutBtn;
+            document.getElementById('about-tooltip-text').innerText = interfaceTexts[lang].aboutTooltip;
 
-            // إعادة بناء كروت المنصات باللغة الجديدة فوراً
+            // إعادة بناء شبكة الأدوات
             renderDashboard(lang);
         }
 
-        // دالة إنشاء وعرض الكروت ديناميكياً داخل شبكة العرض
         function renderDashboard(lang) {
             const grid = document.getElementById('platforms-grid');
-            grid.innerHTML = ''; // تنظيف الشبكة السابقة
+            grid.innerHTML = ''; 
 
             platformsData.forEach(item => {
-                // إنشاء حاوية الرابط (الكرت)
                 const card = document.createElement('a');
                 card.className = 'platform-card';
                 card.href = item.url;
-                card.target = item.url === '#' ? '_self' : '_blank'; // فتح الروابط الخارجية في صفحة جديدة
+                card.target = item.url === '#' ? '_self' : '_blank';
 
-                // إضافة العنوان المترجم
                 const title = document.createElement('div');
                 title.className = 'platform-title';
                 title.innerText = item.title[lang];
                 card.appendChild(title);
 
-                // إضافة الشارة الجمالية للذكاء الاصطناعي
                 const badge = document.createElement('span');
                 badge.className = 'ai-badge';
                 badge.innerText = interfaceTexts[lang].aiBadge;
                 card.appendChild(badge);
 
-                // إضافة فقاعة الشرح والوصف (Tooltip) فور تمرير الفأرة
                 const tooltip = document.createElement('span');
                 tooltip.className = 'tooltip-text';
                 tooltip.innerText = item.desc[lang];
                 card.appendChild(tooltip);
 
-                // دمج الكرت داخل القائمة الرئيسية للموقع
                 grid.appendChild(card);
             });
         }
 
-        // تشغيل الموقع تلقائياً باللغة العربية كخيار افتراضي عند تحميل الصفحة لأول مرة
+        // إطلاق الموقع باللغة العربية تلقائياً عند التشغيل الأول
         window.onload = function() {
             switchLanguage('ar');
         };
