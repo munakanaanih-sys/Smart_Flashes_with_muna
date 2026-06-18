@@ -348,6 +348,32 @@
             }
         }
 
+        /* ===== رسائل الحالة (تحميل / خطأ) ===== */
+        .status-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        .status-msg.error {
+            color: var(--rainbow-red);
+        }
+        .status-msg .retry-btn {
+            display: block;
+            margin: 14px auto 0 auto;
+            background: var(--rainbow-blue);
+            color: white;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
         /* ===== الشاشات الصغيرة ===== */
         @media (max-width: 600px) {
             .top-nav {
@@ -397,7 +423,9 @@
     </header>
 
     <!-- شبكة المنصات -->
-    <main class="grid-container" id="platforms-grid" aria-label="قائمة الأدوات"></main>
+    <main class="grid-container" id="platforms-grid" aria-label="قائمة الأدوات">
+        <p id="loading-msg" class="status-msg">⏳ جاري تحميل الأدوات...</p>
+    </main>
 
     <!-- تذييل الصفحة -->
     <footer>
@@ -433,64 +461,57 @@
             }
         };
 
-        // ===== 2. بيانات المنصات =====
-        // url: '#' تعني الأداة قيد التطوير (تظهر "قريباً" وتكون غير قابلة للنقر)
-        const platformsData = [
-            {
-                title: {
-                    ar: "مساعد التقييم الذكي",
-                    he: "עוזר הערכה חכם",
-                    en: "Smart Assessment Assistant"
-                },
-                desc: {
-                    ar: "أداة لتوليد برومبت لبناء اختبارات وامتحانات.",
-                    he: "כלי ליצירת פרומפט לבניית מבחנים ובחינות.",
-                    en: "A tool for generating prompts to create tests and exams."
-                },
-                url: "https://munakanaanih-sys.github.io/Assessment_Tools/"
-            },
-            {
-                title: {
-                    ar: "منصة إنشاء الانفوجرافيك",
-                    he: "פלטפורמה לבניית אינפוגרפיקה",
-                    en: "Infographic Creation Platform"
-                },
-                desc: {
-                    ar: "أداة لتوليد برومبت لبناء انفوجرافيك تعليمي مميز.",
-                    he: "כלי ליצירת פרומפט לבניית אינפוגרפיקה לימודית.",
-                    en: "A tool for generating a prompt to create an educational infographic."
-                },
-                url: "https://munakanaanih-sys.github.io/infographic_with_muna/"
-            },
-            {
-                title: {
-                    ar: "منصة إنشاء أدوات التقييم",
-                    he: "פלטפורמה לבניית כלי הערכה",
-                    en: "Assessment Tools Platform"
-                },
-                desc: {
-                    ar: "أداة لتوليد برومبت لبناء أداة تقييم ومصفوفات قياس المهارات.",
-                    he: "כלי ליצירת פרומפט לבניית כלי הערכה ומחוונים.",
-                    en: "A tool for generating a prompt to create an assessment tool."
-                },
-                url: "https://munakanaanih-sys.github.io/Muna-assess-mate/"
-            },
-            {
-                title: {
-                    ar: "منصة المرافق للمسح الصفي",
-                    he: "פלטפורמה לבניית וניתוח מיפוי כיתתי",
-                    en: "Classroom Mapping Platform"
-                },
-                desc: {
-                    ar: "أداة لتحليل الامتحان وبناء ملف إكسل للمسح الصفي وتحليل النتائج بدقة.",
-                    he: "כלי לניתוח מבחן המבוסס על קובץ אקסל למיפוי כיתתי וניתוח התוצאות.",
-                    en: "A tool for exam analysis based on an Excel file for classroom mapping."
-                },
-                url: "https://munakanaanih-sys.github.io/mapping_with_muna/"
-            }
-        ];
+        // ===== 2. إعدادات الاتصال بجوجل شيتس =====
+        // معرّف الملف ورقم التبويبة (gid) — خذيهم من رابط الشيت
+        const SHEET_ID = "14fwLbzknnZDgMptGIj8qVY0eaCdY_V-zUxhbLE769No";
+        const SHEET_GID = "0";
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
 
-        // ===== 3. دالة تبديل اللغة =====
+        // ترتيب الأعمدة الثابت في الشيت:
+        // A=اسم عربي, B=اسم عبري, C=اسم إنجليزي, D=tooltip عربي, E=tooltip عبري, F=tooltip إنجليزي, G=الرابط
+        let platformsData = [];
+
+        // ===== 3. دالة جلب البيانات من جوجل شيتس =====
+        async function fetchPlatformsData() {
+            const response = await fetch(SHEET_URL);
+            if (!response.ok) throw new Error('فشل الاتصال بالشيت: ' + response.status);
+
+            const rawText = await response.text();
+
+            // استجابة gviz تأتي ملفوفة بنص إضافي قبل/بعد الـ JSON، لازم نستخرجه
+            const jsonStart = rawText.indexOf('{');
+            const jsonEnd = rawText.lastIndexOf('}');
+            const jsonText = rawText.substring(jsonStart, jsonEnd + 1);
+            const parsed = JSON.parse(jsonText);
+
+            const rows = parsed.table.rows;
+
+            const data = rows
+                .map(row => {
+                    const cells = row.c;
+                    const getVal = (idx) => (cells[idx] && cells[idx].v != null) ? String(cells[idx].v).trim() : '';
+
+                    return {
+                        title: {
+                            ar: getVal(0),
+                            he: getVal(1),
+                            en: getVal(2)
+                        },
+                        desc: {
+                            ar: getVal(3),
+                            he: getVal(4),
+                            en: getVal(5)
+                        },
+                        url: getVal(6) || '#'
+                    };
+                })
+                // تجاهل الصفوف الفارغة بالكامل (مثلاً صف بدون اسم عربي)
+                .filter(item => item.title.ar !== '');
+
+            return data;
+        }
+
+        // ===== 5. دالة تبديل اللغة (تغيّر فقط النصوص، بدون إعادة جلب) =====
         function switchLanguage(lang) {
             const html = document.documentElement;
             html.lang = lang;
@@ -510,11 +531,11 @@
             document.getElementById('about-btn-text').textContent    = texts.aboutBtn;
             document.getElementById('about-tooltip-text').textContent = texts.aboutTooltip;
 
-            // إعادة بناء الشبكة
+            // إعادة رسم الشبكة بالبيانات الموجودة حالياً (بدون إعادة جلب من الشيت)
             renderDashboard(lang);
         }
 
-        // ===== 4. دالة بناء كروت المنصات =====
+        // ===== 6. دالة بناء كروت المنصات =====
         function renderDashboard(lang) {
             const grid = document.getElementById('platforms-grid');
             grid.innerHTML = '';
@@ -522,7 +543,7 @@
             const texts = interfaceTexts[lang];
 
             platformsData.forEach(item => {
-                const isDisabled = item.url === '#';
+                const isDisabled = item.url === '#' || item.url === '';
 
                 // العنصر: <a> إذا كان نشطاً، <div> إذا كان معطلاً
                 const card = document.createElement(isDisabled ? 'div' : 'a');
@@ -537,7 +558,7 @@
                 // عنوان الأداة
                 const title = document.createElement('div');
                 title.className   = 'platform-title';
-                title.textContent = item.title[lang];
+                title.textContent = item.title[lang] || item.title.ar;
                 card.appendChild(title);
 
                 // شارة: "ذكاء اصطناعي" أو "قريباً"
@@ -554,18 +575,39 @@
                 // Tooltip
                 const tooltip = document.createElement('span');
                 tooltip.className   = 'tooltip-text';
-                tooltip.textContent = item.desc[lang];
+                tooltip.textContent = item.desc[lang] || item.desc.ar;
                 card.appendChild(tooltip);
 
                 grid.appendChild(card);
             });
         }
 
-        // ===== 5. تشغيل الصفحة =====
-        // استخدام DOMContentLoaded بدلاً من window.onload لأسرع تحميل
-        document.addEventListener('DOMContentLoaded', () => {
-            switchLanguage('ar');
-        });
+        // ===== 7. عرض رسالة خطأ مع زر إعادة محاولة =====
+        function renderError() {
+            const grid = document.getElementById('platforms-grid');
+            grid.innerHTML = `
+                <p class="status-msg error">
+                    ⚠️ تعذّر تحميل قائمة الأدوات. تأكدي من اتصال الإنترنت وأن ملف جوجل شيتس متاح للعرض للجميع.
+                    <button class="retry-btn" id="retry-btn" type="button">إعادة المحاولة</button>
+                </p>`;
+            document.getElementById('retry-btn').addEventListener('click', initApp);
+        }
+
+        // ===== 8. تشغيل التطبيق: جلب البيانات ثم عرضها =====
+        async function initApp() {
+            const grid = document.getElementById('platforms-grid');
+            grid.innerHTML = '<p id="loading-msg" class="status-msg">⏳ جاري تحميل الأدوات...</p>';
+
+            try {
+                platformsData = await fetchPlatformsData();
+                switchLanguage('ar');
+            } catch (err) {
+                console.error('خطأ في جلب بيانات جوجل شيتس:', err);
+                renderError();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
