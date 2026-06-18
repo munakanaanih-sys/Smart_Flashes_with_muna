@@ -465,7 +465,7 @@
         // معرّف الملف ورقم التبويبة (gid) — خذيهم من رابط الشيت
         const SHEET_ID = "14fwLbzknnZDgMptGIj8qVY0eaCdY_V-zUxhbLE769No";
         const SHEET_GID = "0";
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}&headers=1`;
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
 
         // ترتيب الأعمدة الثابت في الشيت:
         // A=اسم عربي, B=اسم عبري, C=اسم إنجليزي, D=tooltip عربي, E=tooltip عبري, F=tooltip إنجليزي, G=الرابط
@@ -486,8 +486,9 @@
         }
 
         function isHeaderRow(item) {
+            const normalizedTitle = item.title.ar.toLowerCase().trim();
             return HEADER_KEYWORDS.some(keyword =>
-                item.title.ar.toLowerCase().trim() === keyword.toLowerCase()
+                normalizedTitle.includes(keyword.toLowerCase().trim())
             );
         }
 
@@ -505,7 +506,11 @@
 
             const rows = parsed.table.rows;
 
-            const data = rows
+            // الصف الأول في الشيت هو دائماً صف العناوين (الهيدر) حسب بنية الملف الثابتة
+            // نتجاهله مباشرة بغض النظر عن محتواه، كحماية أولى أكيدة
+            const dataRows = rows.slice(1);
+
+            const data = dataRows
                 .map(row => {
                     const cells = row.c;
                     const getVal = (idx) => (cells[idx] && cells[idx].v != null) ? String(cells[idx].v).trim() : '';
@@ -526,7 +531,7 @@
                 })
                 // تجاهل الصفوف الفارغة بالكامل (مثلاً صف بدون اسم عربي)
                 .filter(item => item.title.ar !== '')
-                // استثناء صف العناوين (الهيدر) في حال قُرئ كصف بيانات
+                // استثناء صف العناوين (الهيدر) كحماية إضافية احتياطية
                 .filter(item => !isHeaderRow(item))
                 // استثناء صف "لمحة عني" من شبكة الكروت (له زر ثابت خاص بأعلى الصفحة)
                 .filter(item => !isAboutMeRow(item));
