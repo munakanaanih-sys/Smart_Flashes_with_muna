@@ -472,6 +472,18 @@
         let platformsData = [];
 
         // ===== 3. دالة جلب البيانات من جوجل شيتس =====
+        // ملاحظة: صف "لمحة عني" (About Me) موجود بالشيت كأي صف عادي،
+        // لكن لازم يُستثنى من شبكة الكروت لأنه معروض كزر ثابت بأعلى الصفحة فقط
+        const ABOUT_ME_KEYWORDS = ['لمحة عني', 'מי אני', 'about me'];
+
+        function isAboutMeRow(item) {
+            const allTitles = [item.title.ar, item.title.he, item.title.en]
+                .map(t => t.toLowerCase().trim());
+            return ABOUT_ME_KEYWORDS.some(keyword =>
+                allTitles.includes(keyword.toLowerCase())
+            );
+        }
+
         async function fetchPlatformsData() {
             const response = await fetch(SHEET_URL);
             if (!response.ok) throw new Error('فشل الاتصال بالشيت: ' + response.status);
@@ -506,7 +518,9 @@
                     };
                 })
                 // تجاهل الصفوف الفارغة بالكامل (مثلاً صف بدون اسم عربي)
-                .filter(item => item.title.ar !== '');
+                .filter(item => item.title.ar !== '')
+                // استثناء صف "لمحة عني" من شبكة الكروت (له زر ثابت خاص بأعلى الصفحة)
+                .filter(item => !isAboutMeRow(item));
 
             return data;
         }
