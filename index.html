@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ومضات ذكية مع منى مصطفى</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Rubik:wght@400;500;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* تعريف متغيرات الألوان المبهجة (ألوان قوس قزح) وثيم الموقع */
+        :root {
+            --rainbow-red: #ff4757;
+            --rainbow-orange: #ffa502;
+            --rainbow-yellow: #eccc68;
+            --rainbow-green: #2ed573;
+            --rainbow-blue: #1e90ff;
+            --rainbow-purple: #9c27b0;
+            --bg-light: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #2f3542;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Cairo', 'Rubik', 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* خلفية فنية متدرجة وناعمة بألوان مبهجة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 71, 87, 0.04), 
+                rgba(255, 165, 2, 0.04), 
+                rgba(46, 213, 115, 0.04), 
+                rgba(30, 144, 255, 0.04));
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* شريط اختيار وتبديل اللغة */
+        .lang-switcher {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 35px;
+            background: white;
+            padding: 6px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .lang-btn {
+            border: none;
+            background: none;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 25px;
+            font-family: inherit;
+            color: #747d8c;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(45deg, var(--rainbow-blue), #00d2d3);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
+        }
+
+        /* ترويسة الصفحة والهيدر */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+        }
+
+        /* حاوية الشعار الدائرية المضيئة بألوان الطيف */
+        .logo-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px auto;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(45deg, 
+                var(--rainbow-red), 
+                var(--rainbow-orange), 
+                var(--rainbow-green), 
+                var(--rainbow-blue),
+                var(--rainbow-purple));
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background: white;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: linear-gradient(45deg, #ff4757, #1e90ff, #2ed573);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #57606f;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* شبكة عرض كروت المنصات */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 10px;
+        }
+
+        /* تصميم كرت المنصة التفاعلي */
+        .platform-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 35px 25px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            border: 2.5px solid transparent;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            height: 180px;
+        }
+
+        /* توزيع ألوان قوس قزح ديناميكياً عند تمرير الفأرة على الكروت */
+        .platform-card:nth-child(4n+1):hover { border-color: var(--rainbow-red); box-shadow: 0 15px 30px rgba(255, 71, 87, 0.15); transform: translateY(-6px); }
+        .platform-card:nth-child(4n+2):hover { border-color: var(--rainbow-orange); box-shadow: 0 15px 30px rgba(255, 165, 2, 0.15); transform: translateY(-6px); }
+        .platform-card:nth-child(4n+3):hover { border-color: var(--rainbow-green); box-shadow: 0 15px 30px rgba(46, 213, 115, 0.15); transform: translateY(-6px); }
+        .platform-card:nth-child(4n+4):hover { border-color: var(--rainbow-blue); box-shadow: 0 15px 30px rgba(30, 144, 255, 0.15); transform: translateY(-6px); }
+
+        .platform-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        /* شارة أدوات الذكاء الاصطناعي التجميلية */
+        .ai-badge {
+            background: rgba(30, 144, 255, 0.08);
+            color: var(--rainbow-blue);
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* تصميم الـ Tooltip المطور (فقاعة الشرح عند تمرير الماوس) */
+        .platform-card .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background-color: #2f3542;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 14px;
+            padding: 14px;
+            position: absolute;
+            z-index: 10;
+            bottom: 115%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            pointer-events: none;
+        }
+
+        /* سهم فقاعة الشرح */
+        .platform-card .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #2f3542 transparent transparent transparent;
+        }
+
+        /* حركة ظهور الشرح بسلاسة فائقة */
+        .platform-card:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            bottom: 125%;
+        }
+
+        /* تذييل الصفحة */
+        footer {
+            margin-top: auto;
+            padding: 50px 20px 20px 20px;
+            color: #a4b0be;
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* مواءمة الخطوط حسب اتجاهات اللغات لضمان جمالية التصميم */
+        html[dir="ltr"] .platform-card .tooltip-text { font-family: 'Poppins', sans-serif; }
+        html[dir="rtl"] .platform-card .tooltip-text { font-family: 'Cairo', sans-serif; }
+
+        /* استجابة التصميم لشاشات الهواتف الذكية */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.9rem; }
+            .grid-container { grid-template-columns: 1fr; gap: 20px; }
+            .logo-container { width: 120px; height: 120px; }
+            .platform-card { height: 160px; padding: 25px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('ar')">العربية</button>
+        <button class="lang-btn" onclick="switchLanguage('he')">עברית</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/SNgVgv8L/my-new-icon.png" alt="شعار ومضات ذكية" class="logo-img">
+        </div>
+        <h1 id="main-title">ومضات ذكية مع منى مصطفى</h1>
+        <p class="subtitle" id="main-subtitle">منصة الأدوات التفاعلية وتطبيقات الذكاء الاصطناعي للمعلمين</p>
+    </header>
+
+    <main class="grid-container" id="platforms-grid">
+        </main>
+
+    <footer>
+        <p>&copy; 2026 جميع الحقوق محفوظة - المعلمة ومركزة التقييم منى مصطفى - كناعنة</p>
+    </footer>
+
+    <script>
+        // مصفوفة النصوص الثابتة للواجهة الرئيسية حسب اللغات الثلاثة
+        const interfaceTexts = {
+            ar: {
+                title: "ومضات ذكية مع منى مصطفى",
+                subtitle: "منصة الأدوات التفاعلية وتطبيقات الذكاء الاصطناعي للمعلمين",
+                aiBadge: "ذكاء اصطناعي ✨"
+            },
+            he: {
+                title: "הבזקים חכמים עם מונא מוסטפא",
+                subtitle: "פלטפורמת כלים אינטראקטיביים ויישומי בינה מלאכותית למורים",
+                aiBadge: "בינה מלאכותית ✨"
+            },
+            en: {
+                title: "Smart Flashes with Muna Mustafa",
+                subtitle: "Interactive Tools & AI Applications Platform for Teachers",
+                aiBadge: "AI Tool ✨"
+            }
+        };
+
+        /* قاعدة بيانات المنصات الأربعة المستخرجة بالكامل من ملف الإكسل الخاص بكِ.
+          تمت ترجمة الشروح للإنجليزية بأسلوب تعليمي احترافي لتكتمل تجربة الموقع لجميع زواركِ.
+        */
+        const platformsData = [
+            {
+                title: {
+                    ar: "مساعد التقييم الذكي",
+                    he: "עוזר הערכה חכם",
+                    en: "Smart Assessment Assistant"
+                },
+                desc: {
+                    ar: "أداة ذكية لبناء اختبارات مخصصة وأدوات تقييم متطورة.",
+                    he: "כלי חכם לבניית מבחנים וכלי הערכה מתקדמים.",
+                    en: "A smart AI assistant designed for building customized tests and advanced assessment tools."
+                },
+                url: "#" // يمكنكِ استبدال المربع برابط الأداة الفعلي عندما يجهز
+            },
+            {
+                title: {
+                    ar: "منصة انشاء الانفوجرافيك",
+                    he: "פלטפורמה לבניית אינפוגרפיקה",
+                    en: "Infographic Creation Platform"
+                },
+                desc: {
+                    ar: "اداة لتوليد برومبت لبناء انفوجرافيك تعليمي مميز.",
+                    he: "כלי ליצירת פרומפט לבניית אינפוגרפיקה לימודית.",
+                    en: "An AI tool for generating tailored prompts to build stunning educational infographics."
+                },
+                url: "https://munakanaanih-sys.github.io/infographic_with_muna/"
+            },
+            {
+                title: {
+                    ar: "منصة انشاء ادوات التقييم",
+                    he: "פלטפורמה לבניית כלי הערכה",
+                    en: "Assessment Tools Platform"
+                },
+                desc: {
+                    ar: "اداة لتوليد برومبت لبناء اداة تقييم ومصفوفات قياس المهارات.",
+                    he: "כלי ליצירת פרומפט לבניית כלי הערכה ומחוונים.",
+                    en: "An AI-powered platform to generate prompts for creating evaluation rubrics and assessment matrices."
+                },
+                url: "https://munakanaanih-sys.github.io/Muna-assess-mate/"
+            },
+            {
+                title: {
+                    ar: "منصة المرافق المسح الصفي",
+                    he: "פלטפורמה לבניית וניתוח מיפוי כיתתי",
+                    en: "Classroom Mapping & Analysis Platform"
+                },
+                desc: {
+                    ar: "اداة لتحليل الامتحان بناء ملف اكسل للمسح الصفي وتحليل النتائج بدقة.",
+                    he: "כלי לניתוח מבחן המבוסס על קובץ אקסל למיפוי כיתתי ולניתוח התוצאות.",
+                    en: "An advanced system for test analysis based on classroom mapping spreadsheets to evaluate results."
+                },
+                url: "https://munakanaanih-sys.github.io/mapping_with_muna/"
+            }
+        ];
+
+        // دالة تغيير اللغة وضبط الاتجاهات ونوع الخطوط
+        function switchLanguage(lang) {
+            const htmlElement = document.documentElement;
+            htmlElement.lang = lang;
+            
+            // ضبط اتجاه الصفحة (يسار ليمين فقط للغة الإنجليزية)
+            if (lang === 'en') {
+                htmlElement.dir = 'ltr';
+            } else {
+                htmlElement.dir = 'rtl';
+            }
+
+            // تحديث تصميم الأزرار وجعل الزر الحالي نشطاً
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            const activeIndex = lang === 'ar' ? 0 : lang === 'he' ? 1 : 2;
+            buttons[activeIndex].classList.add('active');
+
+            // تحديث النصوص والترويسة الرئيسية للموقع
+            document.getElementById('main-title').innerText = interfaceTexts[lang].title;
+            document.getElementById('main-subtitle').innerText = interfaceTexts[lang].subtitle;
+
+            // إعادة بناء كروت المنصات باللغة الجديدة فوراً
+            renderDashboard(lang);
+        }
+
+        // دالة إنشاء وعرض الكروت ديناميكياً داخل شبكة العرض
+        function renderDashboard(lang) {
+            const grid = document.getElementById('platforms-grid');
+            grid.innerHTML = ''; // تنظيف الشبكة السابقة
+
+            platformsData.forEach(item => {
+                // إنشاء حاوية الرابط (الكرت)
+                const card = document.createElement('a');
+                card.className = 'platform-card';
+                card.href = item.url;
+                card.target = item.url === '#' ? '_self' : '_blank'; // فتح الروابط الخارجية في صفحة جديدة
+
+                // إضافة العنوان المترجم
+                const title = document.createElement('div');
+                title.className = 'platform-title';
+                title.innerText = item.title[lang];
+                card.appendChild(title);
+
+                // إضافة الشارة الجمالية للذكاء الاصطناعي
+                const badge = document.createElement('span');
+                badge.className = 'ai-badge';
+                badge.innerText = interfaceTexts[lang].aiBadge;
+                card.appendChild(badge);
+
+                // إضافة فقاعة الشرح والوصف (Tooltip) فور تمرير الفأرة
+                const tooltip = document.createElement('span');
+                tooltip.className = 'tooltip-text';
+                tooltip.innerText = item.desc[lang];
+                card.appendChild(tooltip);
+
+                // دمج الكرت داخل القائمة الرئيسية للموقع
+                grid.appendChild(card);
+            });
+        }
+
+        // تشغيل الموقع تلقائياً باللغة العربية كخيار افتراضي عند تحميل الصفحة لأول مرة
+        window.onload = function() {
+            switchLanguage('ar');
+        };
+    </script>
+</body>
+</html>
