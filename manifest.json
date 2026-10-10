@@ -1,0 +1,11 @@
+{
+  "name": "ومضات ذكية مع منى مصطفى",
+  "short_name": "ومضات ذكية",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0c1430",
+  "theme_color": "#0c1430",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
